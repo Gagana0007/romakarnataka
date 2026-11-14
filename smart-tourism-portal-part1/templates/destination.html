@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ destination.name }} travel guide | Roam Karnataka{% endblock %}
+{% block content %}
+<section class="destination-detail" style="--destination-image: url('{{ destination.image }}')">
+  <div class="destination-detail-shade"></div>
+  <div class="container destination-detail-content">
+    <a class="destination-back" href="{{ url_for('home') }}#destinations">← All destinations</a>
+    <div class="eyebrow">{{ destination.category|upper }} · {{ destination.region|upper }}</div>
+    <h1>{{ destination.name }}</h1>
+    <p>{{ destination.description }}</p>
+    <a class="button-light" href="{{ url_for('home') }}?location={{ destination.name|urlencode }}#listings">Explore local listings <span>↗</span></a>
+  </div>
+</section>
+<section class="section-pad"><div class="container"><div class="section-heading"><div><div class="eyebrow dark-eyebrow">DISCOVER LOCALLY</div><h2>Experiences in <em>{{ destination.name }}.</em></h2></div></div><div id="destinationListings" class="listing-grid" data-location="{{ destination.name }}"><p class="listing-results-status">Loading local experiences…</p></div></div></section>
+{% endblock %}

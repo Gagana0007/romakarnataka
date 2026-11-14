@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{{ listing.title }} | Roam Karnataka{% endblock %}
+{% block content %}
+<section class="listing-detail-section">
+  <div class="container">
+    <a class="account-back" href="{{ url_for('home') }}#listings">← Back to experiences</a>
+    <article class="listing-detail-card">
+      {% if listing.imageUrl %}<img src="{{ listing.imageUrl }}" alt="{{ listing.title }}">{% endif %}
+      <div class="listing-detail-copy">
+        {% if listing.sample %}<span class="sample-badge">SAMPLE LISTING</span>{% endif %}
+        <span class="role-badge">{{ listing.type }}</span>
+        <h1>{{ listing.title }}</h1>
+        <p class="listing-location">{{ listing.location }}{% if listing.ownerName %} · Hosted by {{ listing.ownerName }}{% endif %}</p>
+        <p>{{ listing.description }}</p>
+        <strong class="listing-price">₹{{ "%.0f"|format(listing.price) }} <small>/ {{ listing.priceUnit }}</small></strong>
+        {% if listing.sample %}
+        <p class="booking-sample-note">This is a sample listing. Booking requests are available for live listings posted by local owners.</p>
+        {% else %}
+        <section class="booking-panel" id="bookingPanel" data-listing-id="{{ listing.id }}" data-price="{{ listing.price }}" data-price-unit="{{ listing.priceUnit }}">
+          <h2>Request to book</h2>
+          <p>Send a request to the owner. Your dates are not confirmed until the owner responds.</p>
+          <a class="account-submit booking-login-link" id="bookingLoginLink" href="{{ url_for('auth') }}">Sign in to request a booking</a>
+          <form id="bookingForm" class="booking-form" hidden>
+            <label>Check-in<input name="checkIn" type="date" required></label>
+            <label>Check-out<input name="checkOut" type="date" required></label>
+            <label>Guests<select name="guests">{% for count in range(1, 31) %}<option value="{{ count }}">{{ count }}</option>{% endfor %}</select></label>
+            <label>Note to the owner<textarea name="note" rows="3" maxlength="500" placeholder="Anything the owner should know?"></textarea></label>
+            <p class="booking-availability" id="bookingAvailability" role="status">Choose dates to check availability.</p>
+            <p class="booking-estimate" id="bookingEstimate"></p>
+            <button type="submit" class="account-submit">Send booking request</button>
+          </form>
+          <p class="account-status" id="bookingStatus" role="status" aria-live="polite"></p>
+        </section>
+        {% endif %}
+      </div>
+    </article>
+  </div>
+</section>
+<section class="section-pad review-section">
+  <div class="container">
+    <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">TRAVELLER STORIES</div><h2>Reviews</h2><p>Only travellers with a completed booking can submit a review.</p></div>
+    <div id="listingReviews" class="review-grid" data-listing-id="{{ listing.id }}"></div>
+    <p id="reviewEmpty" class="account-status">Loading reviews…</p>
+    <form id="reviewForm" class="review-form" hidden>
+      <h3>Share your experience</h3>
+      <label>Completed booking<select name="bookingId" required></select></label>
+      <label>Rating
+        <select name="rating" required>
+          <option value="5">★★★★★ — Excellent</option>
+          <option value="4">★★★★ — Very good</option>
+          <option value="3">★★★ — Good</option>
+          <option value="2">★★ — Fair</option>
+          <option value="1">★ — Poor</option>
+        </select>
+      </label>
+      <label>Your review<textarea name="comment" rows="4" minlength="5" maxlength="1000" required placeholder="What should future travellers know?"></textarea></label>
+      <button class="account-submit" type="submit">Submit review</button>
+      <p class="account-status" id="reviewStatus" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+{% endblock %}

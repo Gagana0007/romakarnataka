@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Your dashboard | Roam Karnataka{% endblock %}
+{% block content %}
+<section class="dashboard-section">
+  <div class="container">
+    <div class="dashboard-top">
+      <div><div class="eyebrow dark-eyebrow">ROAM KARNATAKA</div><h1>Your dashboard</h1></div>
+      <button class="account-submit dashboard-signout" id="signOutButton" type="button">Sign out</button>
+    </div>
+    <p class="account-status" id="dashboardStatus" role="status" aria-live="polite">Checking your account…</p>
+    <div id="dashboardContent" hidden>
+      <nav class="dashboard-nav" id="dashboardNav" aria-label="Dashboard pages"></nav>
+      <section class="dashboard-view" id="dashboardOverview">
+        <div class="dashboard-welcome">
+          <span class="role-badge" id="roleBadge"></span>
+          <h2>Welcome, <span id="userName"></span></h2>
+          <p id="roleDescription"></p>
+        </div>
+        <div class="dashboard-shortcuts" id="dashboardShortcuts"></div>
+        <div id="dashboardOverviewListings" class="listing-grid"></div>
+      </section>
+      <section class="dashboard-view" id="touristExplore" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">YOUR NEXT KARNATAKA STORY</div><h2>Explore local experiences</h2><p>Browse stays, local guides and cultural experiences.</p></div>
+        <div id="dashboardExploreGrid" class="listing-grid"></div>
+      </section>
+      <section class="dashboard-view" id="touristSaved" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">YOUR SHORTLIST</div><h2>Saved experiences</h2><p>Keep the local experiences you want to come back to.</p></div>
+        <div id="dashboardSavedGrid" class="listing-grid"></div>
+        <p class="account-status" id="savedEmpty" hidden>No saved experiences yet. Explore listings and tap “Save” to add one.</p>
+      </section>
+      <section class="dashboard-view" id="touristBookings" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">YOUR TRAVEL PLANS</div><h2>My booking requests</h2><p>Track owner responses and manage pending requests.</p></div>
+        <div id="touristBookingGrid" class="booking-grid"></div>
+        <p class="account-status" id="touristBookingEmpty" hidden>You have no booking requests yet. Explore local experiences to get started.</p>
+      </section>
+      <section class="dashboard-view" id="dashboardNotifications" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">STAY IN THE LOOP</div><h2>Notifications</h2><p>Booking requests and updates for your account.</p></div>
+        <div id="notificationList" class="notification-list"></div>
+        <p class="account-status" id="notificationEmpty" hidden>You’re all caught up.</p>
+      </section>
+      <section class="dashboard-view" id="adminUsers" hidden>
+        <h2>Platform accounts</h2>
+        <p>Review accounts and assign roles. Administrator access cannot be requested during registration.</p>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Account status</th><th>Account ID</th></tr></thead>
+            <tbody id="userTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="dashboard-view admin-users" id="adminBusinesses" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">MARKETPLACE QUALITY</div><h2>Business verification</h2><p>Review owner-submitted listings before they appear publicly.</p></div>
+        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Business</th><th>Type</th><th>Location</th><th>Owner</th><th>Price</th><th>Review</th></tr></thead><tbody id="pendingListingBody"></tbody></table></div>
+        <p id="pendingListingEmpty" class="account-status" hidden>No listings are waiting for review.</p>
+      </section>
+      <section class="dashboard-view admin-users" id="adminBookings" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">PLATFORM ACTIVITY</div><h2>All bookings</h2><p>Review booking requests and current statuses.</p></div>
+        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Experience</th><th>Tourist</th><th>Dates</th><th>Total</th><th>Status</th></tr></thead><tbody id="adminBookingBody"></tbody></table></div>
+      </section>
+      <section class="dashboard-view admin-users" id="adminAnalytics" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">PLATFORM OVERVIEW</div><h2>Analytics</h2><p id="adminRevenueNote">Figures reflect current Firestore records; booking value is not verified revenue.</p></div>
+        <div class="admin-stat-grid">
+          <article><span>Total users</span><strong id="statUsers">—</strong></article>
+          <article><span>Tourists</span><strong id="statTourists">—</strong></article>
+          <article><span>Business owners</span><strong id="statOwners">—</strong></article>
+          <article><span>Destinations</span><strong id="statDestinations">—</strong></article>
+          <article><span>All listings</span><strong id="statListings">—</strong></article>
+          <article><span>Pending approval</span><strong id="statPending">—</strong></article>
+          <article><span>Approved listings</span><strong id="statApproved">—</strong></article>
+          <article><span>Total bookings</span><strong id="statBookings">—</strong></article>
+          <article><span>Confirmed</span><strong id="statConfirmed">—</strong></article>
+          <article><span>Cancelled</span><strong id="statCancelled">—</strong></article>
+          <article><span>Confirmed booking value</span><strong id="statBookingValue">—</strong></article>
+        </div>
+        <div class="admin-chart-grid">
+          <article><h3>Listing categories</h3><canvas id="listingCategoryChart"></canvas></article>
+          <article><h3>New accounts by month</h3><canvas id="userGrowthChart"></canvas></article>
+          <article><h3>Bookings by month</h3><canvas id="bookingActivityChart"></canvas></article>
+        </div>
+      </section>
+      <section class="dashboard-view admin-users" id="ownerListings" hidden>
+        <div class="owner-listing-heading"><div><h2>My business listings</h2><p>New and edited listings are reviewed by the platform before publication.</p></div><button id="newListingButton" class="account-submit" type="button">Add listing</button></div>
+        <form id="listingForm" class="listing-form" hidden>
+          <input type="hidden" name="id">
+          <label>Business title<input name="title" maxlength="100" required></label>
+          <label>Category<select name="type" required><option>Homestay</option><option>Tour guide</option><option>Cultural experience</option></select></label>
+          <label>Location<input name="location" maxlength="80" placeholder="e.g. Coorg" required></label>
+          <label>Price (INR)<input name="price" type="number" min="0" max="10000000" step="1" required></label>
+          <label class="listing-description-field">Description<textarea name="description" rows="3" maxlength="2000" required></textarea></label>
+          <label class="listing-description-field">Listing photos (up to 5 JPEG, PNG or WebP images; max 5 MB each)<input name="images" type="file" accept="image/jpeg,.jpg,.jpeg,image/png,image/webp" multiple></label>
+          <div class="listing-description-field" id="listingUploadProgress" hidden><progress max="100" value="0"></progress><span id="listingUploadPercent">0%</span></div>
+          <div class="listing-description-field image-preview-grid" id="listingImagePreviews"></div>
+          <div class="listing-form-actions"><button class="account-submit" type="submit">Save listing</button><button id="cancelListingButton" class="account-text-button" type="button">Cancel</button></div>
+        </form>
+        <div id="ownerListingGrid" class="listing-grid"></div>
+      </section>
+      <section class="dashboard-view admin-users" id="ownerBookings" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">GUEST ENQUIRIES</div><h2>Booking requests</h2><p>Review requests for your listings. Confirmed dates are not synced to an external calendar.</p></div>
+        <div id="ownerBookingGrid" class="booking-grid"></div>
+        <p class="account-status" id="ownerBookingEmpty" hidden>No booking requests yet. They’ll appear here when a traveller sends one.</p>
+      </section>
+      <section class="dashboard-view admin-users" id="ownerReviews" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">TRAVELLER FEEDBACK</div><h2>Customer reviews</h2><p>Reviews are submitted only after completed bookings.</p></div>
+        <div id="ownerReviewGrid" class="review-grid"></div>
+        <p class="account-status" id="ownerReviewEmpty" hidden>No reviews yet.</p>
+      </section>
+      <section class="dashboard-view admin-users" id="dashboardProfile" hidden>
+        <div class="dashboard-page-heading"><div class="eyebrow dark-eyebrow">ACCOUNT SETTINGS</div><h2>Your profile</h2><p>Your sign-in details and account type.</p></div>
+        <dl class="profile-details"><div><dt>Name</dt><dd id="profileName"></dd></div><div><dt>Email</dt><dd id="profileEmail"></dd></div><div><dt>Account type</dt><dd id="profileRole"></dd></div></dl>
+      </section>
+    </div>
+  </div>
+</section>
+{% endblock %}

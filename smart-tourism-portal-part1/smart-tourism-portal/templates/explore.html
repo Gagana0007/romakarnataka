@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Explore Karnataka | Roam Karnataka{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/part3.css') }}">{% endblock %}
+{% block content %}
+<section class="listing-hero"><div class="container"><div class="eyebrow">THE LAND OF MANY STORIES</div><h1>Find your <em>somewhere.</em></h1><p>Explore Karnataka's landscapes, heritage and local experiences.</p></div></section>
+<section class="listing-page container">
+  <div class="listing-toolbar"><div><span class="eyebrow dark-eyebrow">CURATED FOR CURIOUS TRAVELLERS</span><h2>Explore destinations</h2></div>
+  <div class="filter-controls"><input id="destinationSearch" type="search" placeholder="Search a place or city" aria-label="Search destinations"><select id="destinationCategory" aria-label="Filter by category"><option value="">All categories</option><option>Heritage</option><option>Nature</option><option>Coast</option><option>Outdoors</option><option>Wildlife</option></select></div></div>
+  <div id="destinationStatus" class="listing-status" aria-live="polite">Loading destinations…</div><div id="destinationGrid" class="listing-grid"></div>
+  <div class="listing-toolbar business-toolbar"><div><span class="eyebrow dark-eyebrow">MEET THE LOCALS</span><h2>Stays, guides & experiences</h2></div><div class="filter-controls"><input id="businessSearch" type="search" placeholder="Search listings or city" aria-label="Search business listings"><select id="businessType" aria-label="Filter listing type"><option value="">All types</option><option value="homestay">Homestays</option><option value="guide">Tour guides</option><option value="experience">Cultural experiences</option></select></div></div>
+  <div id="businessStatus" class="listing-status" aria-live="polite">Loading local listings…</div><div id="businessGrid" class="listing-grid"></div>
+</section>
+{% endblock %}
+{% block scripts %}<script type="module" src="{{ url_for('static', filename='js/explore.js') }}"></script>{% endblock %}

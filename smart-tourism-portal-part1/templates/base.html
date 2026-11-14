@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d2c">
+  <meta name="description" content="Discover Karnataka through local stays, expert guides and unforgettable cultural experiences.">
+  <title>{% block title %}Roam Karnataka | Discover Local{% endblock %}</title>
+  {% if request.endpoint in ["auth", "dashboard"] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/accounts.css') }}">{% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% if request.endpoint in ["home", "destination_detail", "listing_detail"] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/catalog.css') }}">{% endif %}
+  {% block head %}{% endblock %}
+</head>
+<body{% if request.endpoint in ["auth", "dashboard"] %} class="account-page"{% endif %}>
+  <div class="preloader" id="preloader" aria-hidden="true"><span class="preloader-mark">R</span><span>ROAM KARNATAKA</span></div>
+  <header class="site-header" id="siteHeader">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand brand" href="/"><span class="brand-mark">R</span><span>roam<span class="brand-light">karnataka</span></span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}#destinations">Destinations</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}#experiences">Experiences</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}#about">Why Roam</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}#partner">List your business</a></li>
+            <li class="nav-item"><a class="nav-link nav-login" href="{{ url_for('auth') }}">Log in / Sign up</a></li>
+            <li class="nav-item"><button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☾</button></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row gy-4 pb-5">
+        <div class="col-lg-4">
+          <a class="navbar-brand brand footer-brand" href="/"><span class="brand-mark">R</span><span>roam<span class="brand-light">karnataka</span></span></a>
+          <p class="footer-copy mt-3">Find the places, people and stories that make Karnataka unforgettable.</p>
+        </div>
+        <div class="col-6 col-lg-2"><h6>Explore</h6><a href="{{ url_for('home') }}#destinations">Destinations</a><a href="{{ url_for('home') }}#experiences">Experiences</a><a href="{{ url_for('home') }}#listings">Local stays</a></div>
+        <div class="col-6 col-lg-2"><h6>For partners</h6><a href="{{ url_for('home') }}#partner">List your business</a><a href="{{ url_for('auth') }}?role=owner">Owner sign up</a><a href="{{ url_for('auth') }}">Owner sign in</a></div>
+        <div class="col-lg-4"><h6>Stay in the loop</h6><p class="footer-copy">Get thoughtful travel inspiration from Karnataka.</p><form class="newsletter" id="newsletterForm"><input type="email" aria-label="Email address" placeholder="Your email address" required><button type="submit" aria-label="Subscribe">→</button></form><div class="social-links mt-3"><a href="#footer" aria-label="Instagram">ig</a><a href="#footer" aria-label="Facebook">f</a><a href="#footer" aria-label="YouTube">▶</a></div></div>
+      </div>
+      <div class="footer-bottom"><span>© <span id="year"></span> Roam Karnataka. Explore responsibly.</span><span>Developed by Tech Team</span></div>
+    </div>
+  </footer>
+  <div class="toast-message" id="toastMessage" role="status" aria-live="polite"></div>
+  <script>window.FIREBASE_WEB_CONFIG = {{ firebase_config|tojson }};</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

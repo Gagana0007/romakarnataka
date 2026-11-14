@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ business.businessName }} | Roam Karnataka{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/part3.css') }}">{% endblock %}
+{% block content %}
+<section class="detail-hero" style="--detail-image:url('{{ business.imageUrls[0] if business.imageUrls else '' }}')"><div class="container"><a class="back-link" href="/explore">← Back to explore</a><div class="eyebrow">{{ business.businessType|replace('experience','CULTURAL EXPERIENCE')|upper }} · {{ business.city }}</div><h1>{{ business.businessName }}</h1><p>{{ business.description }}</p>{% if business.isSample %}<span class="sample-badge">Sample listing</span>{% endif %}{% if business.verified %}<span class="verified-badge">Verified listing</span>{% endif %}</div></section>
+<section class="container detail-content"><div><span class="eyebrow dark-eyebrow">LOCAL BUSINESS</span><h2>Experience Karnataka locally.</h2><p>{{ business.description }}</p><p class="price-line">From <strong>₹{{ '%.0f'|format(business.price|float) }}</strong> <span>per service / night (as set by owner)</span></p></div><aside class="nearby-panel"><h3>Listing details</h3><p>{{ business.city }}, {{ business.state }}</p><p>Contact and booking tools will be connected in Part 4.</p><a class="button-dark" href="/register">Create an account ↗</a></aside></section>
+{% endblock %}

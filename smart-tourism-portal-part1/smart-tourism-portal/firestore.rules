@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function userRole() {
+      return signedIn()
+        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role
+        : null;
+    }
+    match /users/{userId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+      // Profile creation/update is performed through the verified Flask API.
+      allow write: if false;
+    }
+    match /destinations/{destinationId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /businesses/{businessId} {
+      allow read: if true;
+      // Business writes are performed by Flask after token and owner checks.
+      allow write: if false;
+    }
+    match /bookings/{bookingId} {
+      allow read, write: if false;
+    }
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

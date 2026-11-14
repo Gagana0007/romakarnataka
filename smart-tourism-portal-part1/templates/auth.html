@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Sign in or create an account | Roam Karnataka{% endblock %}
+{% block content %}
+<section class="account-section">
+  <div class="account-card">
+    <a class="account-back" href="{{ url_for('home') }}">← Back to exploring</a>
+    <div class="eyebrow dark-eyebrow">YOUR LOCAL JOURNEY STARTS HERE</div>
+    <h1 id="authTitle">Welcome back.</h1>
+    <p class="account-intro" id="authIntro">Sign in to continue to your Roam Karnataka account.</p>
+
+    <form id="loginForm" class="account-form">
+      <label>Email address<input name="email" type="email" autocomplete="email" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" minlength="6" required></label>
+      <button class="account-submit" type="submit">Sign in</button>
+      <button class="account-text-button" id="forgotPassword" type="button">Forgot password?</button>
+      <p class="account-switch">New here? <button class="account-text-button" data-show-signup type="button">Create an account</button></p>
+    </form>
+
+    <form id="signupForm" class="account-form" hidden>
+      <label>Your name<input name="name" type="text" autocomplete="name" maxlength="80" required></label>
+      <label>Email address<input name="email" type="email" autocomplete="email" required></label>
+      <label>Password<input name="password" type="password" autocomplete="new-password" minlength="6" required></label>
+      <label>I am joining as
+        <select name="role" id="signupRole" required>
+          <option value="tourist">Tourist — explore and book</option>
+          <option value="owner">Owner — manage a business</option>
+        </select>
+      </label>
+      <p class="account-note">Administrator access is granted separately by an existing administrator.</p>
+      <button class="account-submit" type="submit">Create account</button>
+      <p class="account-switch">Already registered? <button class="account-text-button" data-show-login type="button">Sign in</button></p>
+    </form>
+    <p class="account-status" id="authStatus" role="status" aria-live="polite"></p>
+  </div>
+</section>
+{% endblock %}
